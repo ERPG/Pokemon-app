@@ -1,0 +1,19 @@
+{
+  "name": "bootstrap-vue-training",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^0.18.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.enalquiler.com:enalquiler/bootstrap-vue-training.git"
+  },
+  "author": "",
+  "license": "ISC"
+}

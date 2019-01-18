@@ -6,10 +6,82 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 {% endblock %}
 
+{% block javascripts %}
+<!-- development version, includes helpful console warnings -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    const app = new Vue({
+        el: '#app',
+        data: {
+            message: 'Pokemon table',
+            imageLink: 'assets/img/pokemon-logo.svg',
+            pokemons: { },
+            load: ''
+        },
+        mounted () {
+            axios
+            .get('https://127.0.0.1:8000/api/pokemon', {
+                header: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(pokemon => {
+                // console.log(pokemon.data['hydra:member']);
+                this.pokemons = pokemon.data['hydra:member'];
+            })
+        },
+        methods: {
+            toogle: () => {
+                this.load = !this.load;
+            }
+        },
+        filters: {
+
+        },
+        components: {
+
+        }
+    });
+</script>
+{% endblock %}
+
 {% block body %}
-<div class="container">
+{% verbatim %}
+<div id="app" class="container">
     <div class="jumbotron mt-5">
-        <h1 class="display-4 text-center"><img src="{{ asset('assets/img/pokemon-logo.svg') }}" alt="pokémon app"></h1>
+        <h1 class="display-4 text-center"><img v-bind:src="imageLink" alt="pokémon app"></h1>
+    </div>
+    <div>
+    <div>
+        <h3>{{ message }}</h3>
+    </div>
+    <button type="button" class="btn btn-primary" @click="toogle()">Primary</button>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">Identifier</th>
+                    <th scope="col">height</th>
+                    <th scope="col">weight</th>
+                    <th scope="col">baseExperience</th>
+                    <th scope="col">species</th>
+                    <th scope="col">isDefault</th>
+                </tr>
+            </thead>
+            <tbody @if="load = !load">
+                <tr v-for="poke in pokemons">
+                <th>{{poke.id}}</th>
+                    <td>{{poke.identifier}}</td>
+                    <td>{{poke.height}}</td>
+                    <td>{{poke.weight}}</td>
+                    <td>{{poke.baseExperience}}</td>
+                    <td>{{poke.species}}</td>
+                    <td>{{poke.isDefault}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
+{% endverbatim %}
 {% endblock %}
